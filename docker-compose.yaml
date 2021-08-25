@@ -1,0 +1,36 @@
+version: '3.6'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: minduo_mongo_db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: 'minduo'
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'password'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb_data:/data/db
+      - ./mongo/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+    command: --auth
+
+
+#  minduo_web:
+#    container_name: minduo_web
+#    restart: unless-stopped
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./src:/usr/src/minduo/src
+#    working_dir: /usr/src/minduo/
+#    command: serve
+#    ports:
+#      - "8000:8000"
+#    networks:
+#      - default
+#      - database_network
+#    depends_on:
+#      - minduo_pg_db
